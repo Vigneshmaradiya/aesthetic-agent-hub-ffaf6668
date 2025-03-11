@@ -41,7 +41,7 @@ const HeroSection = () => {
       <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
         <div className="order-2 lg:order-1 text-center lg:text-left">
           <span className="inline-block appear-animated opacity-0 font-medium text-primary mb-3">
-            Hello, I'm
+            Hello, I&apos;m
           </span>
           <h1 className="appear-animated opacity-0 text-4xl sm:text-5xl md:text-6xl font-bold mb-4 tracking-tight">
             Vignesh Maradiya
@@ -66,6 +66,8 @@ const HeroSection = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center p-2 rounded-full bg-background/80 border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
               aria-label="GitHub Profile"
+            >
+              <GitHubIcon className="h-6 w-6" />
             </a>
             <a
               href="mailto:maradiyavignesh@gmail.com"
