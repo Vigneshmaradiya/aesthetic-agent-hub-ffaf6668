@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   // Avoid hydration mismatch by only rendering after component mounts
@@ -15,6 +15,10 @@ export function ThemeToggle() {
 
   if (!mounted) return null;
 
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
   return (
     <Button
       variant="ghost"
@@ -23,7 +27,7 @@ export function ThemeToggle() {
       className="w-10 h-10 rounded-full transition-all duration-300 ease-in-out hover:bg-primary/10"
       aria-label="Toggle theme"
     >
-      {theme === "light" ? (
+      {theme === "dark" ? (
         <Sun className="h-5 w-5 text-foreground transition-all duration-300" />
       ) : (
         <Moon className="h-5 w-5 text-foreground transition-all duration-300" />

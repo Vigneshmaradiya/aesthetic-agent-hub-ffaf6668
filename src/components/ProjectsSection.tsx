@@ -1,6 +1,5 @@
 
 import { useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Github } from "lucide-react";
 
@@ -48,92 +47,74 @@ const ProjectsSection = () => {
     <section
       id="projects"
       ref={sectionRef}
-      className="section-spacing section-container"
+      className="section-spacing"
     >
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="appear-animated opacity-0 inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-3">
-            Projects
-          </span>
-          <h2 className="appear-animated opacity-0 text-3xl md:text-4xl font-bold mb-4">
-            My Latest Work
-          </h2>
-          <p className="appear-animated opacity-0 text-lg text-muted-foreground max-w-2xl mx-auto">
-            A showcase of my projects and experiments in AI & Data Science.
-          </p>
-        </div>
+      <h2 className="appear-animated opacity-0 heading-with-line text-2xl font-bold text-slate-200">
+        <span className="font-mono text-primary text-lg">06.</span> Some Things I&apos;ve Built
+      </h2>
 
-        <div className="grid gap-8 sm:gap-12 sm:grid-cols-1 lg:grid-cols-2">
-          {projectsData.map((project, index) => (
-            <div
-              key={project.title}
-              className="appear-animated opacity-0 group relative rounded-2xl border border-border overflow-hidden transition-all duration-300 hover:shadow-xl"
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <div className="relative p-6 md:p-8 h-full flex flex-col">
-                <div className="mb-6 md:mb-8">
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <h3 className="text-2xl font-bold group-hover:text-primary transition-colors duration-300">
-                      {project.title}
-                    </h3>
+      <div className="mt-10 space-y-16">
+        {projectsData.map((project, index) => (
+          <div
+            key={project.title}
+            className="appear-animated opacity-0 group"
+          >
+            <div className="relative grid md:grid-cols-12 gap-4 md:gap-8 items-center">
+              <div className={`md:col-span-7 ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'}`}>
+                <div className="z-10 relative rounded-lg bg-slate-800/50 p-6 border border-slate-700 hover-glow">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="font-mono text-xs text-primary mb-2">Featured Project</div>
+                    <div className="flex gap-4">
+                      {project.github && (
+                        <a 
+                          href={project.github} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-slate-400 hover:text-primary transition-colors"
+                          aria-label="GitHub Repository"
+                        >
+                          <Github className="h-5 w-5" />
+                        </a>
+                      )}
+                      {project.demo && (
+                        <a 
+                          href={project.demo} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-slate-400 hover:text-primary transition-colors"
+                          aria-label="Live Demo"
+                        >
+                          <ExternalLink className="h-5 w-5" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  
-                  <p className="text-muted-foreground mb-6">{project.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.techStack.map((tech) => (
-                      <Badge 
-                        key={tech} 
-                        variant="outline"
-                        className="px-2.5 py-0.5 text-xs font-medium border-primary/20 text-primary bg-primary/5"
-                      >
+                  <h3 className="text-xl font-semibold text-slate-200 mb-4">
+                    {project.title}
+                  </h3>
+                  <p className="text-slate-400 mb-6">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.techStack.map(tech => (
+                      <span key={tech} className="text-xs font-mono text-slate-300">
                         {tech}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                 </div>
-                
-                <div className="mt-auto flex gap-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="rounded-lg group/link transition-all duration-300 hover:bg-background hover:text-foreground"
-                    asChild
-                  >
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="h-4 w-4 mr-2 group-hover/link:text-primary transition-colors duration-300" />
-                      GitHub
-                    </a>
-                  </Button>
-                  
-                  {project.demo && (
-                    <Button
-                      variant="default"
-                      size="sm"
-                      className="rounded-lg group/link transition-all duration-300"
-                      asChild
-                    >
-                      <a
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="h-4 w-4 mr-2 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform duration-300" />
-                        Demo
-                      </a>
-                    </Button>
-                  )}
+              </div>
+              
+              <div className={`md:col-span-5 ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}>
+                <div className="relative aspect-video rounded-lg overflow-hidden bg-slate-800/50 border border-slate-700">
+                  <div className="absolute inset-0 flex items-center justify-center text-slate-500">
+                    Project Preview
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );

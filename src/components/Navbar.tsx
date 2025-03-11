@@ -1,16 +1,17 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#education", label: "Education" },
-  { href: "#contact", label: "Contact" },
+  { href: "#home", label: "Home", number: "01" },
+  { href: "#about", label: "About", number: "02" },
+  { href: "#skills", label: "Skills", number: "03" },
+  { href: "#experience", label: "Experience", number: "04" },
+  { href: "#education", label: "Education", number: "05" },
+  { href: "#projects", label: "Projects", number: "06" },
+  { href: "#contact", label: "Contact", number: "07" },
 ];
 
 const Navbar = () => {
@@ -41,7 +42,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = useCallback((sectionId: string) => {
     setMobileMenuOpen(false);
     const element = document.getElementById(sectionId.substring(1));
     if (element) {
@@ -50,7 +51,7 @@ const Navbar = () => {
         behavior: "smooth",
       });
     }
-  };
+  }, []);
 
   return (
     <>
@@ -61,7 +62,7 @@ const Navbar = () => {
             : "py-5 bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <a 
               href="#home" 
@@ -75,8 +76,8 @@ const Navbar = () => {
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
-              <ul className="flex items-center space-x-1">
+            <nav className="hidden md:flex items-center space-x-6">
+              <ul className="flex items-center space-x-6">
                 {navLinks.map((link) => (
                   <li key={link.href}>
                     <a
@@ -85,16 +86,14 @@ const Navbar = () => {
                         e.preventDefault();
                         scrollToSection(link.href);
                       }}
-                      className={`relative px-3 py-2 text-sm rounded-md transition-all duration-300 hover:text-primary ${
+                      className={`nav-link ${
                         activeSection === link.href.substring(1)
-                          ? "text-primary font-medium"
-                          : "text-foreground/80"
+                          ? "nav-link-active"
+                          : ""
                       }`}
                     >
+                      <span className="nav-link-number">{link.number}.</span>
                       {link.label}
-                      {activeSection === link.href.substring(1) && (
-                        <span className="absolute inset-x-0 -bottom-px h-0.5 bg-primary rounded-full" />
-                      )}
                     </a>
                   </li>
                 ))}
@@ -129,7 +128,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 md:hidden pt-20 glass-morphism dark:glass-morphism-dark"
+            className="fixed inset-0 z-40 md:hidden pt-20 glass-effect"
           >
             <nav className="px-4 py-6">
               <ul className="flex flex-col space-y-4">
@@ -141,12 +140,13 @@ const Navbar = () => {
                         e.preventDefault();
                         scrollToSection(link.href);
                       }}
-                      className={`block px-4 py-3 text-lg rounded-lg transition-all duration-200 ${
+                      className={`block px-4 py-3 text-lg font-mono rounded-lg transition-all duration-200 ${
                         activeSection === link.href.substring(1)
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "hover:bg-secondary"
+                          ? "text-primary"
+                          : "text-slate-400 hover:text-primary"
                       }`}
                     >
+                      <span className="text-primary mr-2">{link.number}.</span>
                       {link.label}
                     </a>
                   </li>

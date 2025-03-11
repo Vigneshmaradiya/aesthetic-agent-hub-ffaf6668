@@ -52,43 +52,33 @@ const SkillsSection = () => {
     <section
       id="skills"
       ref={sectionRef}
-      className="section-spacing section-container bg-secondary/30 dark:bg-secondary/10 py-24 rounded-3xl my-10"
+      className="section-spacing"
     >
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="appear-animated opacity-0 inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-3">
-            Skills
-          </span>
-          <h2 className="appear-animated opacity-0 text-3xl md:text-4xl font-bold mb-4">
-            My Technical Expertise
-          </h2>
-          <p className="appear-animated opacity-0 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Here are some of the technologies and tools I work with.
-          </p>
-        </div>
+      <h2 className="appear-animated opacity-0 heading-with-line text-2xl font-bold text-slate-200">
+        <span className="font-mono text-primary text-lg">03.</span> Skills
+      </h2>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {skillsData.map((category, index) => (
-            <div 
-              key={category.category}
-              className={`appear-animated opacity-0 p-6 rounded-xl border border-border bg-card backdrop-blur-sm hover:shadow-lg transition-all duration-300`}
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <h3 className="text-xl font-semibold mb-4">{category.category}</h3>
-              <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill) => (
-                  <Badge 
-                    key={skill} 
-                    variant="secondary"
-                    className="px-3 py-1 text-sm bg-secondary/50 hover:bg-primary/20 hover:text-primary transition-colors duration-300"
-                  >
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-10">
+        {skillsData.map((category, index) => (
+          <div 
+            key={category.category}
+            className="appear-animated opacity-0 p-5 border border-slate-800 rounded-lg hover-glow"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <h3 className="text-lg font-semibold text-slate-200 mb-4 font-mono">{category.category}</h3>
+            <div className="flex flex-wrap gap-2">
+              {category.skills.map((skill) => (
+                <Badge 
+                  key={skill} 
+                  variant="secondary"
+                  className="px-3 py-1.5 text-xs font-mono bg-slate-800/50 text-slate-300 hover:bg-primary/20 hover:text-primary transition-colors duration-300"
+                >
+                  {skill}
+                </Badge>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
