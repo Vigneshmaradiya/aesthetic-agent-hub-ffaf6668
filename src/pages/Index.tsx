@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -6,15 +5,14 @@ import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import EducationSection from "@/components/EducationSection";
+import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { toast } = useToast();
 
-  // Show welcome toast on first load
   useEffect(() => {
     const hasSeenWelcome = sessionStorage.getItem("hasSeenWelcome");
     
@@ -29,7 +27,6 @@ const Index = () => {
       }, 1500);
     }
     
-    // Add intersection observer for animations
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -50,20 +47,19 @@ const Index = () => {
   }, [toast]);
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <HeroSection />
-          <AboutSection />
-          <SkillsSection />
-          <ProjectsSection />
-          <EducationSection />
-          <ContactSection />
-        </main>
-        <Footer />
-      </div>
-    </ThemeProvider>
+    <div className="min-h-screen flex flex-col bg-background">
+      <Navbar />
+      <main className="flex-grow">
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <ExperienceSection />
+        <EducationSection />
+        <ProjectsSection />
+        <ContactSection />
+      </main>
+      <Footer />
+    </div>
   );
 };
 
