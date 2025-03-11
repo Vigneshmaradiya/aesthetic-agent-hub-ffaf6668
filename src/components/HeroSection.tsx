@@ -29,7 +29,7 @@ const HeroSection = () => {
 
   const handleResumeDownload = () => {
     // Replace with your Supabase resume URL
-    window.open("https://your-supabase-resume-url", "_blank");
+    window.open("https://bsxuihpqbteiynloucnx.supabase.co/storage/v1/object/sign/Resume/My_Resume.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJSZXN1bWUvTXlfUmVzdW1lLnBkZiIsImlhdCI6MTc0MTcxOTk3MCwiZXhwIjoyMDU3MDc5OTcwfQ.17Dkej4dDf96ii9hXqUL_KR8-03fIE-hGDRiyRNeEzw", "_blank");
   };
 
   return (
