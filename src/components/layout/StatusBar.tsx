@@ -1,0 +1,144 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSessionStore } from "@/stores/session-store";
+import type { ConnectionStatus } from "@/stores/session-store";
+import { useCanvasStore } from "@/stores/canvas-store";
+import { HitlToggle } from "@/components/hitl/HitlToggle";
+import { AutonomousIndicator } from "@/components/hitl/AutonomousIndicator";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { SLAStatusIndicator } from "@/components/canvas/SLATimerBadge";
+
+function ConnectionDot({ status }: { status: ConnectionStatus }) {
+  const colorMap: Record<ConnectionStatus, string> = {
+    connected: "bg-nexus-success shadow-[0_0_8px_rgba(0,210,106,0.5)] animate-pulse-slow",
+    connecting: "bg-nexus-warning animate-pulse",
+    disconnected: "bg-nexus-text-dim",
+    error: "bg-nexus-error shadow-[0_0_8px_rgba(255,77,106,0.5)] animate-pulse",
+  };
+
+  return (
+    <span
+      className={`inline-block h-2 w-2 rounded-full ${colorMap[status]}`}
+      role="status"
+      aria-label={`Status: ${status}`}
+    />
+  );
+}
+
+function formatUptime(startedAt: Date) {
+  const diff = Math.floor((Date.now() - startedAt.getTime()) / 1000);
+  const hours = Math.floor(diff / 3600);
+  const minutes = Math.floor((diff % 3600) / 60);
+  return `${hours}h ${minutes}m`;
+}
+
+export function StatusBar() {
+  const { mcpConnections, startedAt, llmModel, ticketingProvider, userName } =
+    useSessionStore();
+  const setShowMCPPanel = useSessionStore((s) => s.setShowMCPPanel);
+  const setShowMorningBrief = useSessionStore((s) => s.setShowMorningBrief);
+  const activeTicketId = useCanvasStore((s) => s.activeTicketId);
+  const ticketIntelligence = useCanvasStore((s) => s.ticketIntelligence);
+  const [uptime, setUptime] = useState("0h 0m");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setUptime(formatUptime(startedAt));
+    }, 60000);
+    setUptime(formatUptime(startedAt));
+    return () => clearInterval(interval);
+  }, [startedAt]);
+
+  return (
+    <div className="flex h-8 items-center justify-between border-t border-nexus-border bg-nexus-surface px-4 text-xs text-nexus-text-muted">
+      <div className="flex items-center gap-4">
+        {/* Ticketing provider status */}
+        {ticketingProvider && (
+          <div className="flex items-center gap-1.5">
+            <span className="inline-block h-2 w-2 rounded-full bg-nexus-success" />
+            <span className="capitalize">{ticketingProvider}</span>
+            {userName && (
+              <span className="text-nexus-text-dim">({userName})</span>
+            )}
+          </div>
+        )}
+
+        {/* MCP connections — only show active (non-disconnected) entries */}
+        <button
+          onClick={() => setShowMCPPanel(true)}
+          className="flex items-center gap-3 rounded-md px-1 py-0.5 transition-colors hover:bg-nexus-surface-raised"
+          title="Manage tool connections"
+        >
+          {Object.entries(mcpConnections)
+            .filter(([, status]) => status !== "disconnected")
+            .map(([service, status]) => (
+              <div key={service} className="flex items-center gap-1.5">
+                <ConnectionDot status={status} />
+                <span>{service}</span>
+              </div>
+            ))}
+          {Object.entries(mcpConnections).filter(
+            ([, status]) => status !== "disconnected",
+          ).length === 0 &&
+            !ticketingProvider && (
+              <span className="text-nexus-text-dim">No connections</span>
+            )}
+          <span className="text-nexus-text-dim" aria-hidden="true">
+            +
+          </span>
+        </button>
+
+        {/* Active ticket chip */}
+        {activeTicketId && (
+          <div className="flex items-center gap-1.5 rounded-md bg-nexus-accent/10 px-2 py-0.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-nexus-accent" />
+            <span className="font-mono text-nexus-accent">#{activeTicketId}</span>
+            {ticketIntelligence?.subject && (
+              <span className="max-w-[200px] truncate text-nexus-text-muted">
+                {ticketIntelligence.subject}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* SLA status indicator */}
+        <SLAStatusIndicator />
+      </div>
+
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <HitlToggle />
+          <AutonomousIndicator />
+        </div>
+        <span className="text-nexus-text-dim">|</span>
+        <ThemeToggle />
+        <span className="text-nexus-text-dim">|</span>
+        {llmModel && (
+          <>
+            <span className="flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-nexus-accent" />
+              {llmModel}
+            </span>
+            <span className="text-nexus-text-dim">|</span>
+          </>
+        )}
+        <span>Session: {uptime}</span>
+        <button
+          onClick={() => setShowMorningBrief(true)}
+          className="rounded-md bg-nexus-accent/15 px-2 py-0.5 font-medium text-nexus-accent transition-colors hover:bg-nexus-accent/25"
+          title="Open Morning Brief"
+        >
+          Brief
+        </button>
+        <span className="text-nexus-text-dim">|</span>
+        <span className="text-nexus-text-dim">
+          <kbd className="rounded bg-nexus-surface-raised px-1 font-mono text-[10px]">
+            ⌘K
+          </kbd>{" "}
+          Command
+        </span>
+      </div>
+    </div>
+  );
+}
