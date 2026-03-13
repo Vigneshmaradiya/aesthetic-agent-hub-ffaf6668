@@ -2,120 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme: Light ────────────────────────────────────────────── */
 :root {
-  --navy: 10 25 47;
-  --light-navy: 17 34 64;
-  --lightest-navy: 35 53 84;
-  --slate: 136 146 176;
-  --light-slate: 168 178 209;
-  --lightest-slate: 204 214 246;
-  --white: 230 241 255;
-  --green: 100 255 218;
-  --green-tint: 100 255 218;
+  --nexus-base: 250 250 250;
+  --nexus-surface: 255 255 255;
+  --nexus-surface-raised: 240 240 242;
+  --nexus-border: 218 218 224;
+  --nexus-border-subtle: 234 234 238;
+  --nexus-accent: 0 140 156;
+  --nexus-accent-muted: 0 118 130;
+  --nexus-accent-dim: 178 232 238;
+  --nexus-text: 26 26 30;
+  --nexus-text-muted: 100 100 112;
+  --nexus-text-dim: 160 160 170;
+  --nexus-success: 0 158 80;
+  --nexus-warning: 200 142 0;
+  --nexus-error: 210 45 75;
+  --nexus-info: 0 120 195;
+  --nexus-accent-glow: rgba(0, 140, 156, 0.1);
+  color-scheme: light;
+}
+
+/* ── Theme: Dark ─────────────────────────────────────────────── */
+.dark {
+  --nexus-base: 10 10 11;
+  --nexus-surface: 17 17 19;
+  --nexus-surface-raised: 26 26 30;
+  --nexus-border: 42 42 46;
+  --nexus-border-subtle: 31 31 35;
+  --nexus-accent: 0 240 255;
+  --nexus-accent-muted: 0 196 208;
+  --nexus-accent-dim: 0 122 128;
+  --nexus-text: 232 232 236;
+  --nexus-text-muted: 139 139 149;
+  --nexus-text-dim: 85 85 94;
+  --nexus-success: 0 210 106;
+  --nexus-warning: 255 184 0;
+  --nexus-error: 255 77 106;
+  --nexus-info: 0 163 255;
+  --nexus-accent-glow: rgba(0, 240, 255, 0.12);
   color-scheme: dark;
 }
 
-html {
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--lightest-navy)) hsl(var(--navy));
-}
-
 body {
-  margin: 0;
-  padding: 0;
-  background-color: rgb(var(--navy));
-  color: rgb(var(--slate));
-  font-family: 'Inter', 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
+  @apply bg-nexus-base font-sans text-nexus-text;
 }
 
-/* Selection */
-::selection {
-  background-color: rgb(var(--lightest-navy));
-  color: rgb(var(--lightest-slate));
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgb(var(--navy));
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(var(--lightest-navy));
-  border-radius: 4px;
-}
-
-/* Section heading style - matches Brittany's numbered headings */
-.numbered-heading {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  font-size: 1.625rem;
-  font-weight: 700;
-  color: rgb(var(--lightest-slate));
-  margin-bottom: 2.5rem;
-  white-space: nowrap;
-}
-
-.numbered-heading::before {
-  position: relative;
-  counter-increment: section 1;
-  content: "0" counter(section) ".";
-  margin-right: 0.625rem;
-  color: rgb(var(--green));
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 1.25rem;
-  font-weight: 400;
-}
-
-.numbered-heading::after {
-  content: "";
-  display: block;
-  position: relative;
-  width: 100%;
-  max-width: 300px;
-  height: 1px;
-  margin-left: 1.25rem;
-  background-color: rgb(var(--lightest-navy));
-}
-
-/* Inline link style */
-.inline-link {
-  display: inline-block;
-  position: relative;
-  color: rgb(var(--green));
-  text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.inline-link::after {
-  content: '';
-  display: block;
-  width: 0;
-  height: 1px;
-  position: relative;
-  bottom: 0.15em;
-  background-color: rgb(var(--green));
-  transition: width 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  opacity: 0.5;
-}
-
-.inline-link:hover::after {
-  width: 100%;
-}
-
-/* Fade up animation */
-@keyframes fadeUp {
+/* ── Animations ──────────────────────────────────────────────── */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -123,77 +60,168 @@ body {
   }
 }
 
-.fade-up {
-  animation: fadeUp 0.5s ease forwards;
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
 }
 
-.fade-up-delay-1 { animation-delay: 100ms; }
-.fade-up-delay-2 { animation-delay: 200ms; }
-.fade-up-delay-3 { animation-delay: 300ms; }
-.fade-up-delay-4 { animation-delay: 400ms; }
-.fade-up-delay-5 { animation-delay: 500ms; }
-
-/* Tab styling for experience/education */
-.tab-button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 42px;
-  padding: 0 20px;
-  border-left: 2px solid rgb(var(--lightest-navy));
-  background-color: transparent;
-  color: rgb(var(--slate));
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 0.8125rem;
-  text-align: left;
-  white-space: nowrap;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  cursor: pointer;
-  border-top: none;
-  border-right: none;
-  border-bottom: none;
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
 }
 
-.tab-button:hover,
-.tab-button:focus {
-  background-color: rgb(var(--light-navy));
-  color: rgb(var(--green));
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
 }
 
-.tab-button.active {
-  color: rgb(var(--green));
-  border-left-color: rgb(var(--green));
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
 }
 
-/* Project card hover */
-.project-card {
-  position: relative;
-  cursor: default;
-  padding: 2rem 1.75rem;
-  background-color: rgb(var(--light-navy));
-  border-radius: 4px;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.project-card:hover {
-  transform: translateY(-7px);
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* Big button style (like Resume button) */
-.big-button {
-  color: rgb(var(--green));
-  background-color: transparent;
-  border: 1px solid rgb(var(--green));
-  border-radius: 4px;
-  padding: 1.25rem 1.75rem;
-  font-size: 0.875rem;
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  line-height: 1;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+::-webkit-scrollbar-thumb {
+  @apply rounded bg-nexus-border;
 }
 
-.big-button:hover {
-  background-color: rgb(var(--green-tint) / 0.1);
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-nexus-text-dim;
+}
+
+/* TipTap / ProseMirror editor styles */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  pointer-events: none;
+  height: 0;
+  @apply text-nexus-text-dim;
+}
+
+.ProseMirror ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+
+.ProseMirror ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+
+.ProseMirror li {
+  margin-bottom: 0.25rem;
+}
+
+.ProseMirror pre {
+  @apply rounded-md bg-nexus-base p-3 font-mono text-sm;
+}
+
+.ProseMirror code {
+  @apply rounded bg-nexus-base px-1 py-0.5 font-mono text-sm text-nexus-accent;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-2 border-nexus-accent pl-4 italic text-nexus-text-muted;
+}
+
+.ProseMirror hr {
+  @apply my-4 border-nexus-border;
+}
+
+.ProseMirror strong {
+  font-weight: 700;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror u {
+  text-decoration: underline;
+}
+
+.ProseMirror s {
+  text-decoration: line-through;
+}
+
+/* Chat markdown content styles */
+.markdown-content h1 {
+  @apply mb-3 mt-4 text-lg font-bold text-nexus-text;
+}
+.markdown-content h2 {
+  @apply mb-2 mt-3 text-base font-semibold text-nexus-text;
+}
+.markdown-content h3 {
+  @apply mb-1.5 mt-2 text-sm font-semibold text-nexus-text;
+}
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  @apply mb-1 mt-2 text-sm font-medium text-nexus-text;
+}
+.markdown-content p {
+  @apply mb-2 last:mb-0;
+}
+.markdown-content strong {
+  @apply font-semibold text-nexus-text;
+}
+.markdown-content em {
+  @apply italic;
+}
+.markdown-content ul {
+  @apply mb-2 list-disc pl-5;
+}
+.markdown-content ol {
+  @apply mb-2 list-decimal pl-5;
+}
+.markdown-content li {
+  @apply mb-1;
+}
+.markdown-content code {
+  @apply rounded bg-nexus-base px-1 py-0.5 font-mono text-xs text-nexus-accent;
+}
+.markdown-content pre {
+  @apply mb-2 overflow-x-auto rounded-md bg-nexus-base p-3 font-mono text-xs;
+}
+.markdown-content pre code {
+  @apply bg-transparent p-0;
+}
+.markdown-content a {
+  @apply text-nexus-accent underline decoration-nexus-accent/40 hover:decoration-nexus-accent;
+}
+.markdown-content blockquote {
+  @apply mb-2 border-l-2 border-nexus-accent/40 pl-3 italic text-nexus-text-muted;
+}
+.markdown-content table {
+  @apply mb-2 w-full border-collapse text-xs;
+}
+.markdown-content th {
+  @apply border border-nexus-border bg-nexus-surface-raised px-2 py-1 text-left font-semibold text-nexus-text;
+}
+.markdown-content td {
+  @apply border border-nexus-border px-2 py-1;
+}
+.markdown-content hr {
+  @apply my-3 border-nexus-border;
 }
