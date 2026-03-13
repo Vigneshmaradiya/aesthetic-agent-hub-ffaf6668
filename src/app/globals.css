@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: 10 25 47;
+  --light-navy: 17 34 64;
+  --lightest-navy: 35 53 84;
+  --slate: 136 146 176;
+  --light-slate: 168 178 209;
+  --lightest-slate: 204 214 246;
+  --white: 230 241 255;
+  --green: 100 255 218;
+  --green-tint: 100 255 218;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--lightest-navy)) hsl(var(--navy));
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(var(--navy));
+  color: rgb(var(--slate));
+  font-family: 'Inter', 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* Selection */
+::selection {
+  background-color: rgb(var(--lightest-navy));
+  color: rgb(var(--lightest-slate));
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--navy));
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--lightest-navy));
+  border-radius: 4px;
+}
+
+/* Section heading style - matches Brittany's numbered headings */
+.numbered-heading {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: rgb(var(--lightest-slate));
+  margin-bottom: 2.5rem;
+  white-space: nowrap;
+}
+
+.numbered-heading::before {
+  position: relative;
+  counter-increment: section 1;
+  content: "0" counter(section) ".";
+  margin-right: 0.625rem;
+  color: rgb(var(--green));
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.numbered-heading::after {
+  content: "";
+  display: block;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  height: 1px;
+  margin-left: 1.25rem;
+  background-color: rgb(var(--lightest-navy));
+}
+
+/* Inline link style */
+.inline-link {
+  display: inline-block;
+  position: relative;
+  color: rgb(var(--green));
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.inline-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 1px;
+  position: relative;
+  bottom: 0.15em;
+  background-color: rgb(var(--green));
+  transition: width 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  opacity: 0.5;
+}
+
+.inline-link:hover::after {
+  width: 100%;
+}
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.fade-up-delay-1 { animation-delay: 100ms; }
+.fade-up-delay-2 { animation-delay: 200ms; }
+.fade-up-delay-3 { animation-delay: 300ms; }
+.fade-up-delay-4 { animation-delay: 400ms; }
+.fade-up-delay-5 { animation-delay: 500ms; }
+
+/* Tab styling for experience/education */
+.tab-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 42px;
+  padding: 0 20px;
+  border-left: 2px solid rgb(var(--lightest-navy));
+  background-color: transparent;
+  color: rgb(var(--slate));
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  text-align: left;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  cursor: pointer;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+.tab-button:hover,
+.tab-button:focus {
+  background-color: rgb(var(--light-navy));
+  color: rgb(var(--green));
+}
+
+.tab-button.active {
+  color: rgb(var(--green));
+  border-left-color: rgb(var(--green));
+}
+
+/* Project card hover */
+.project-card {
+  position: relative;
+  cursor: default;
+  padding: 2rem 1.75rem;
+  background-color: rgb(var(--light-navy));
+  border-radius: 4px;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.project-card:hover {
+  transform: translateY(-7px);
+}
+
+/* Big button style (like Resume button) */
+.big-button {
+  color: rgb(var(--green));
+  background-color: transparent;
+  border: 1px solid rgb(var(--green));
+  border-radius: 4px;
+  padding: 1.25rem 1.75rem;
+  font-size: 0.875rem;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.big-button:hover {
+  background-color: rgb(var(--green-tint) / 0.1);
+}
