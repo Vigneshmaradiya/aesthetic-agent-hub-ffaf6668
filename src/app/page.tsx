@@ -4,6 +4,7 @@ import { Navbar } from "@/components/portfolio/Navbar";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { AboutSection } from "@/components/portfolio/AboutSection";
 import { EducationSection } from "@/components/portfolio/EducationSection";
+// import { ExperienceSection } from "@/components/portfolio/ExperienceSection";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
 import { ContactSection } from "@/components/portfolio/ContactSection";
 import { Footer } from "@/components/portfolio/Footer";
@@ -21,6 +22,9 @@ export default function HomePage() {
         <HeroSection />
         <AboutSection />
         <EducationSection />
+        {/* Experience section — uncomment when ready:
+        <ExperienceSection />
+        */}
         <ProjectsSection />
         <ContactSection />
       </main>
