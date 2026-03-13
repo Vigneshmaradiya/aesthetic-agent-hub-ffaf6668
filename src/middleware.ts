@@ -1,8 +1,10 @@
-/* Portfolio site has no auth — disable the NextAuth middleware entirely. */
+/* Portfolio site — no middleware needed */
+export { };
 
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware() {
+export function middleware(_request: NextRequest) {
   return NextResponse.next();
 }
 
