@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist-mcp",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": false,
+    "sourceMap": false,
+    "isolatedModules": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/mcp-servers/zendesk/**/*.ts",
+    "src/lib/zendesk/api.ts",
+    "src/mcp-servers/jira-onprem/**/*.ts",
+    "src/lib/jira/**/*.ts"
+  ]
+}

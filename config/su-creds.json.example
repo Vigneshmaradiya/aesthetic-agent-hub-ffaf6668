@@ -1,0 +1,10 @@
+{
+  "instance": "https://your-instance.searchunify.com",
+  "timeout": 30000,
+  "authType": "clientCredentials",
+  "oauth2": {
+    "clientId": "YOUR_CLIENT_ID",
+    "clientSecret": "YOUR_CLIENT_SECRET"
+  },
+  "uid": "YOUR_SEARCH_CLIENT_UID"
+}

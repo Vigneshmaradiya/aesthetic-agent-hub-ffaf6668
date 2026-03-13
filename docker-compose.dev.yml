@@ -1,0 +1,85 @@
+services:
+  nexus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=development
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-dev-secret-change-me}
+      - MCP_ZENDESK_URL=http://zendesk-mcp:8080/mcp
+      - MCP_SEARCHUNIFY_URL=http://searchunify-mcp:3001
+      - MCP_JIRA_ONPREM_URL=http://jira-onprem-mcp:8080/mcp
+    depends_on:
+      zendesk-mcp:
+        condition: service_started
+    restart: unless-stopped
+
+  # Zendesk MCP Server — same as production compose
+  zendesk-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.zendesk-mcp
+    env_file:
+      - .env.local
+    environment:
+      - MCP_PORT=8080
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  # JIRA On-Premise MCP Server
+  # Auth: Uses Basic Auth (JIRA_USERNAME + JIRA_PASSWORD) internally.
+  # The Nexus app connects to /mcp without forwarding credentials.
+  jira-onprem-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.jira-onprem-mcp
+    env_file:
+      - .env.local
+    environment:
+      - MCP_PORT=8080
+      - JIRA_BASE_URL=${JIRA_ONPREM_BASE_URL}
+      - JIRA_USERNAME=${JIRA_ONPREM_USERNAME}
+      - JIRA_PASSWORD=${JIRA_ONPREM_PASSWORD}
+    ports:
+      - "8090:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped

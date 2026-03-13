@@ -1,0 +1,120 @@
+services:
+  nexus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      # Overrides — service-internal URLs that differ from local dev
+      - NODE_ENV=production
+      - NEXTAUTH_URL=http://localhost:3000
+      - AUTH_TRUST_HOST=true
+      - MCP_ZENDESK_URL=http://zendesk-mcp:8080/mcp
+      # SearchUnify connects directly to the remote server — no local container needed.
+      # MCP_SEARCHUNIFY_URL is taken from .env.local (https://integration.searchunify.com/su-mcp/)
+      - MCP_JIRA_ONPREM_URL=${MCP_JIRA_ONPREM_URL:-}
+    volumes:
+      - zendesk-config:/tmp/zendesk-config
+    depends_on:
+      zendesk-mcp:
+        condition: service_started
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/api/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Zendesk MCP Server (custom TypeScript implementation)
+  # Provides all Zendesk tools via MCP Streamable HTTP transport:
+  #   - get_tickets, get_ticket, get_ticket_comments
+  #   - search_tickets, create_ticket, update_ticket
+  #   - create_ticket_comment
+  #
+  # Auth: Reads ZENDESK_EMAIL + ZENDESK_API_TOKEN from .env.local,
+  # and also supports OAuth Bearer token forwarding from the Nexus app.
+  zendesk-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.zendesk-mcp
+    env_file:
+      - .env.local
+    environment:
+      - MCP_PORT=8080
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  # JIRA On-Premise MCP Server (optional — uncomment when JIRA is available)
+  # Provides JIRA issue tracking tools via MCP Streamable HTTP transport:
+  #   - search_issues, get_issue, create_issue, update_issue
+  #   - add_comment, link_zendesk_ticket, find_by_ticket
+  #
+  # Auth: Uses Basic Auth (JIRA_USERNAME + JIRA_PASSWORD) internally.
+  # The Nexus app connects to /mcp without forwarding credentials.
+  #
+  # NOTE: When using Docker, set MCP_JIRA_ONPREM_URL=http://localhost:8090/mcp in .env.local
+  #       (host port 8090 maps to container port 8080).
+  #       For local dev (no Docker), set MCP_JIRA_ONPREM_URL=http://localhost:8081/mcp
+  #       (server default port is 8081 unless MCP_PORT env var is set).
+  #
+  # jira-onprem-mcp:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.jira-onprem-mcp
+  #   env_file:
+  #     - .env.local
+  #   environment:
+  #     - MCP_PORT=8080
+  #     - JIRA_BASE_URL=${JIRA_ONPREM_BASE_URL}
+  #     - JIRA_USERNAME=${JIRA_ONPREM_USERNAME}
+  #     - JIRA_PASSWORD=${JIRA_ONPREM_PASSWORD}
+  #   ports:
+  #     - "8090:8080"
+  #   healthcheck:
+  #     test:
+  #       [
+  #         "CMD",
+  #         "wget",
+  #         "--no-verbose",
+  #         "--tries=1",
+  #         "--spider",
+  #         "http://localhost:8080/health",
+  #       ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 5s
+  #   restart: unless-stopped
+
+  # SearchUnify MCP: connects directly to https://integration.searchunify.com/su-mcp/
+  # No local container needed — the Nexus app calls the remote server with API key headers.
+
+volumes:
+  zendesk-config:

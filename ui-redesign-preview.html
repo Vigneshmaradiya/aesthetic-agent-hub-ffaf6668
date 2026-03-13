@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUAgentNexus - Improved UI Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --nexus-base: #0A0A0B;
+      --nexus-surface: #111113;
+      --nexus-surface-raised: #1A1A1E;
+      --nexus-border: #2A2A2E;
+      --nexus-border-subtle: #1F1F23;
+      --nexus-accent: #00F0FF;
+      --nexus-accent-muted: #00C4D0;
+      --nexus-accent-dim: #007A80;
+      --nexus-text: #E8E8EC;
+      --nexus-text-muted: #8B8B95;
+      --nexus-text-dim: #55555E;
+      --nexus-success: #00D26A;
+      --nexus-warning: #FFB800;
+      --nexus-error: #FF4D6A;
+      --nexus-info: #00A3FF;
+      --nexus-glow: rgba(0, 240, 255, 0.15);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--nexus-base);
+      color: var(--nexus-text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Header */
+    .header {
+      height: 48px;
+      background: var(--nexus-surface);
+      border-bottom: 1px solid var(--nexus-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--nexus-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--nexus-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--nexus-accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    .omnibar {
+      flex: 1;
+      max-width: 600px;
+      margin: 0 32px;
+    }
+
+    .omnibar-input {
+      width: 100%;
+      background: var(--nexus-base);
+      border: 1px solid var(--nexus-border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      color: var(--nexus-text);
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .omnibar-input:focus {
+      outline: none;
+      border-color: var(--nexus-accent);
+      box-shadow: 0 0 0 3px var(--nexus-glow);
+    }
+
+    .omnibar-input::placeholder {
+      color: var(--nexus-text-dim);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: 1px solid var(--nexus-border);
+      border-radius: 6px;
+      color: var(--nexus-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-size: 16px;
+    }
+
+    .icon-btn:hover {
+      background: var(--nexus-surface-raised);
+      border-color: var(--nexus-accent-dim);
+      color: var(--nexus-accent);
+      transform: translateY(-1px);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Chat Panel */
+    .chat-panel {
+      width: 40%;
+      background: var(--nexus-base);
+      border-right: 1px solid var(--nexus-border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      height: 44px;
+      background: var(--nexus-surface);
+      border-bottom: 1px solid var(--nexus-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .panel-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--nexus-text-dim);
+    }
+
+    .model-selector {
+      background: var(--nexus-base);
+      border: 1px solid var(--nexus-border);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: var(--nexus-text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .model-selector:hover {
+      border-color: var(--nexus-accent-dim);
+      background: var(--nexus-surface-raised);
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .message {
+      display: flex;
+      gap: 12px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .message.user .message-avatar {
+      background: linear-gradient(135deg, var(--nexus-accent-dim), var(--nexus-accent-muted));
+    }
+
+    .message.assistant .message-avatar {
+      background: var(--nexus-surface-raised);
+      border: 1px solid var(--nexus-border);
+      color: var(--nexus-accent);
+    }
+
+    .message-content {
+      flex: 1;
+      background: var(--nexus-surface);
+      border: 1px solid var(--nexus-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .message.assistant .message-content {
+      background: var(--nexus-surface-raised);
+    }
+
+    .chat-input-container {
+      padding: 16px;
+      border-top: 1px solid var(--nexus-border);
+      background: var(--nexus-surface);
+    }
+
+    .chat-input {
+      width: 100%;
+      background: var(--nexus-base);
+      border: 1px solid var(--nexus-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--nexus-text);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      resize: none;
+      min-height: 44px;
+      max-height: 120px;
+      transition: all 0.2s;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--nexus-accent);
+      box-shadow: 0 0 0 3px var(--nexus-glow);
+    }
+
+    /* Canvas Panel */
+    .canvas-panel {
+      flex: 1;
+      background: var(--nexus-base);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 8px 16px;
+      background: var(--nexus-surface);
+      border-bottom: 1px solid var(--nexus-border);
+    }
+
+    .tab {
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      color: var(--nexus-text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .tab:hover {
+      background: var(--nexus-base);
+      color: var(--nexus-text);
+    }
+
+    .tab.active {
+      background: var(--nexus-base);
+      color: var(--nexus-accent);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--nexus-accent);
+      box-shadow: 0 0 8px var(--nexus-accent);
+    }
+
+    .canvas-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .section {
+      background: var(--nexus-surface);
+      border: 1px solid var(--nexus-border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+
+    .section:hover {
+      border-color: var(--nexus-accent-dim);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--nexus-text);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge.success {
+      background: rgba(0, 210, 106, 0.15);
+      color: var(--nexus-success);
+      border: 1px solid rgba(0, 210, 106, 0.3);
+    }
+
+    .badge.warning {
+      background: rgba(255, 184, 0, 0.15);
+      color: var(--nexus-warning);
+      border: 1px solid rgba(255, 184, 0, 0.3);
+    }
+
+    .badge.error {
+      background: rgba(255, 77, 106, 0.15);
+      color: var(--nexus-error);
+      border: 1px solid rgba(255, 77, 106, 0.3);
+    }
+
+    .badge.info {
+      background: rgba(0, 163, 255, 0.15);
+      color: var(--nexus-info);
+      border: 1px solid rgba(0, 163, 255, 0.3);
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .metric-card {
+      background: var(--nexus-base);
+      border: 1px solid var(--nexus-border);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .metric-card:hover {
+      border-color: var(--nexus-accent-dim);
+      transform: scale(1.05);
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--nexus-accent);
+      margin-bottom: 4px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--nexus-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--nexus-accent);
+      color: var(--nexus-base);
+    }
+
+    .btn-primary:hover {
+      background: var(--nexus-accent-muted);
+      box-shadow: 0 0 16px var(--nexus-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--nexus-surface-raised);
+      color: var(--nexus-text);
+      border: 1px solid var(--nexus-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--nexus-surface);
+      border-color: var(--nexus-accent-dim);
+      transform: translateY(-2px);
+    }
+
+    /* Status Bar */
+    .status-bar {
+      height: 28px;
+      background: var(--nexus-surface);
+      border-top: 1px solid var(--nexus-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 11px;
+      color: var(--nexus-text-muted);
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--nexus-success);
+      box-shadow: 0 0 8px var(--nexus-success);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--nexus-border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--nexus-text-dim);
+    }
+
+    /* Code blocks */
+    code {
+      background: var(--nexus-base);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--nexus-accent);
+    }
+
+    ul {
+      color: var(--nexus-text-muted);
+      font-size: 13px;
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    .action-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <span>Nexus</span>
+    </div>
+    <div class="omnibar">
+      <input type="text" class="omnibar-input" placeholder="Search or jump to... (⌘K)">
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" title="Settings">⚙</button>
+      <button class="icon-btn" title="Notifications">🔔</button>
+      <button class="icon-btn" title="Profile">👤</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Chat Panel -->
+    <div class="chat-panel">
+      <div class="panel-header">
+        <span class="panel-title">Nexus Co-pilot</span>
+        <select class="model-selector">
+          <option>GPT-4 Turbo</option>
+          <option>Claude 3.5 Sonnet</option>
+          <option>Gemini Pro</option>
+        </select>
+      </div>
+      
+      <div class="messages">
+        <div class="message user">
+          <div class="message-avatar">👤</div>
+          <div class="message-content">
+            Analyze ticket #12345 and provide resolution recommendations
+          </div>
+        </div>
+        
+        <div class="message assistant">
+          <div class="message-avatar">🤖</div>
+          <div class="message-content">
+            I've analyzed ticket #12345. Here's what I found:
+            <br><br>
+            <strong>Issue Classification:</strong> Database Connection Error<br>
+            <strong>Severity:</strong> High<br>
+            <strong>Confidence:</strong> 94%<br>
+            <br>
+            <strong>Recommended Actions:</strong><br>
+            1. Check connection pool settings<br>
+            2. Verify database credentials<br>
+            3. Review recent deployment logs
+          </div>
+        </div>
+        
+        <div class="message user">
+          <div class="message-avatar">👤</div>
+          <div class="message-content">
+            Show me the connection pool metrics
+          </div>
+        </div>
+        
+        <div class="message assistant">
+          <div class="message-avatar">🤖</div>
+          <div class="message-content">
+            Fetching connection pool metrics from monitoring system...
+            <br><br>
+            <code>Max Connections: 50</code><br>
+            <code>Active: 48</code><br>
+            <code>Idle: 2</code><br>
+            <code>Avg Duration: 45s</code>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-input-container">
+        <textarea class="chat-input" placeholder="Ask Nexus anything..."></textarea>
+      </div>
+    </div>
+
+    <!-- Canvas Panel -->
+    <div class="canvas-panel">
+      <div class="tabs">
+        <button class="tab active">Timeline</button>
+        <button class="tab">Diagnostics</button>
+        <button class="tab">Logs</button>
+        <button class="tab">Response Builder</button>
+      </div>
+      
+      <div class="canvas-content">
+        <!-- Ticket Overview Section -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">Ticket Intelligence</span>
+            <span class="badge success">High Confidence</span>
+          </div>
+          
+          <div class="metric-grid">
+            <div class="metric-card">
+              <div class="metric-value">94%</div>
+              <div class="metric-label">Confidence</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">P1</div>
+              <div class="metric-label">Priority</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">2.5h</div>
+              <div class="metric-label">Est. Resolution</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Classification Section -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">Case Classification</span>
+            <span class="badge info">Database</span>
+          </div>
+          <p style="color: var(--nexus-text-muted); font-size: 13px; margin-bottom: 12px;">
+            Connection pool exhaustion detected. Customer experiencing intermittent timeouts during peak hours.
+          </p>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary">Apply Fix</button>
+            <button class="btn btn-secondary">View Similar Cases</button>
+          </div>
+        </div>
+
+        <!-- Root Cause Section -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">Root Cause Analysis</span>
+            <span class="badge warning">In Progress</span>
+          </div>
+          <ul>
+            <li>Connection pool max size: 50 (reached limit)</li>
+            <li>Average connection duration: 45s (expected: 5s)</li>
+            <li>Slow query detected in user_sessions table</li>
+            <li>Recent deployment increased query complexity</li>
+          </ul>
+        </div>
+
+        <!-- Suggested Actions -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">Next Best Actions</span>
+          </div>
+          <div class="action-list">
+            <button class="btn btn-primary">✓ Increase Connection Pool Size</button>
+            <button class="btn btn-secondary">⚡ Optimize Slow Query</button>
+            <button class="btn btn-secondary">↩ Roll Back Deployment</button>
+            <button class="btn btn-secondary">📤 Escalate to Database Team</button>
+          </div>
+        </div>
+
+        <!-- Similar Cases -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">Similar Cases</span>
+            <span class="badge info">3 Found</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="padding: 8px; background: var(--nexus-base); border-radius: 6px; border: 1px solid var(--nexus-border);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--nexus-text); margin-bottom: 4px;">Ticket #11234</div>
+              <div style="font-size: 11px; color: var(--nexus-text-muted);">Same issue - resolved by increasing pool size to 100</div>
+            </div>
+            <div style="padding: 8px; background: var(--nexus-base); border-radius: 6px; border: 1px solid var(--nexus-border);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--nexus-text); margin-bottom: 4px;">Ticket #10987</div>
+              <div style="font-size: 11px; color: var(--nexus-text-muted);">Connection timeout - fixed slow query on user_sessions</div>
+            </div>
+            <div style="padding: 8px; background: var(--nexus-base); border-radius: 6px; border: 1px solid var(--nexus-border);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--nexus-text); margin-bottom: 4px;">Ticket #10456</div>
+              <div style="font-size: 11px; color: var(--nexus-text-muted);">Peak hour timeouts - added connection pool monitoring</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div style="display: flex; gap: 16px;">
+      <div class="status-item">
+        <span class="status-dot"></span>
+        <span>Zendesk Connected</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot"></span>
+        <span>MCP Servers: 3 Active</span>
+      </div>
+      <div class="status-item">
+        <span class="mono">Agent: Autonomous</span>
+      </div>
+    </div>
+    <div>
+      <span class="mono">v1.0.0 | Ticket #12345</span>
+    </div>
+  </div>
+</body>
+</html>

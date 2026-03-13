@@ -1,0 +1,6 @@
+2026-03-05 10:00:00.123 [INFO] AuthService: User login successful
+2026-03-05 10:00:01.456 [DEBUG] CacheManager: Cache hit for key user:1234
+2026-03-05 10:00:02.789 [WARN] RateLimiter: Approaching rate limit for API key abc123
+2026-03-05 10:00:03.012 [ERROR] BillingModule: Failed to process payment - timeout after 30s
+2026-03-05 10:00:04.345 [INFO] TicketService: Ticket #1001 updated
+2026-03-05 10:00:05.678 [FATAL] DatabasePool: Connection pool exhausted

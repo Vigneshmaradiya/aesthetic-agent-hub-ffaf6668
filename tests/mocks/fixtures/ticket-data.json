@@ -1,0 +1,20 @@
+{
+  "tickets": [
+    {
+      "id": "1001",
+      "subject": "Cannot login to dashboard",
+      "status": "open",
+      "priority": "high",
+      "requester": { "name": "Alice Chen", "email": "alice@example.com" },
+      "created_at": "2026-03-05T10:00:00Z"
+    },
+    {
+      "id": "1002",
+      "subject": "API rate limit exceeded",
+      "status": "open",
+      "priority": "medium",
+      "requester": { "name": "Bob Smith", "email": "bob@example.com" },
+      "created_at": "2026-03-05T11:00:00Z"
+    }
+  ]
+}
