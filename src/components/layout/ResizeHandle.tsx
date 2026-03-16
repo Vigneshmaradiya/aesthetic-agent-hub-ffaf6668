@@ -40,10 +40,10 @@ export function ResizeHandle() {
       aria-orientation="vertical"
       aria-label="Resize panels"
       tabIndex={0}
-      className="group flex w-1 cursor-col-resize items-center justify-center hover:bg-nexus-accent/20"
+      className="group relative flex w-1 cursor-col-resize items-center justify-center transition-colors hover:bg-nexus-accent/10"
       onMouseDown={handleMouseDown}
     >
-      <div className="h-8 w-0.5 rounded-full bg-nexus-border transition-colors group-hover:bg-nexus-accent" />
+      <div className="h-10 w-0.5 rounded-full bg-nexus-border transition-all duration-200 group-hover:h-16 group-hover:bg-nexus-accent group-hover:shadow-[0_0_8px_rgb(var(--nexus-accent)/0.4)]" />
     </div>
   );
 }

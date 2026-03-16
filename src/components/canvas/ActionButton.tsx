@@ -18,11 +18,12 @@ export function ActionButton({
   requiresHitl,
 }: ActionButtonProps) {
   const baseClasses =
-    "rounded-md px-3 py-1.5 text-xs font-medium transition-colors";
+    "rounded-lg px-4 py-2 text-xs font-medium transition-all duration-200 inline-flex items-center gap-2";
   const variantClasses = {
-    primary: "bg-nexus-accent text-nexus-base hover:opacity-90",
+    primary:
+      "bg-nexus-accent text-nexus-base hover:opacity-90 hover:-translate-y-px hover:shadow-[0_0_16px_var(--nexus-glow)]",
     secondary:
-      "border border-nexus-border bg-nexus-surface-raised text-nexus-text hover:border-nexus-accent hover:text-nexus-accent",
+      "border border-nexus-border bg-nexus-surface-raised text-nexus-text hover:border-nexus-accent-dim hover:text-nexus-accent hover:-translate-y-px",
     ghost:
       "text-nexus-text-muted hover:bg-nexus-surface-raised hover:text-nexus-text",
   };
@@ -42,8 +43,9 @@ export function ActionButton({
       {label}
       {requiresHitl && (
         <span
-          className="ml-1 text-nexus-warning"
+          className="text-nexus-warning"
           aria-label="Requires approval"
+          style={{ boxShadow: "0 0 4px rgb(var(--nexus-warning) / 0.5)" }}
         >
           ●
         </span>

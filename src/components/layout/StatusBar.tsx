@@ -11,15 +11,23 @@ import { SLAStatusIndicator } from "@/components/canvas/SLATimerBadge";
 
 function ConnectionDot({ status }: { status: ConnectionStatus }) {
   const colorMap: Record<ConnectionStatus, string> = {
-    connected: "bg-nexus-success shadow-[0_0_8px_rgba(0,210,106,0.5)] animate-pulse-slow",
+    connected: "bg-nexus-success",
     connecting: "bg-nexus-warning animate-pulse",
     disconnected: "bg-nexus-text-dim",
-    error: "bg-nexus-error shadow-[0_0_8px_rgba(255,77,106,0.5)] animate-pulse",
+    error: "bg-nexus-error animate-pulse",
+  };
+
+  const glowMap: Record<ConnectionStatus, string> = {
+    connected: "0 0 8px rgb(var(--nexus-success) / 0.5)",
+    connecting: "0 0 6px rgb(var(--nexus-warning) / 0.4)",
+    disconnected: "none",
+    error: "0 0 8px rgb(var(--nexus-error) / 0.5)",
   };
 
   return (
     <span
-      className={`inline-block h-2 w-2 rounded-full ${colorMap[status]}`}
+      className={`inline-block h-[6px] w-[6px] rounded-full ${colorMap[status]}`}
+      style={{ boxShadow: glowMap[status] }}
       role="status"
       aria-label={`Status: ${status}`}
     />
@@ -51,12 +59,12 @@ export function StatusBar() {
   }, [startedAt]);
 
   return (
-    <div className="flex h-8 items-center justify-between border-t border-nexus-border bg-nexus-surface px-4 text-xs text-nexus-text-muted">
+    <div className="glass-surface flex h-7 items-center justify-between border-t border-nexus-border px-4 text-[11px] text-nexus-text-muted">
       <div className="flex items-center gap-4">
         {/* Ticketing provider status */}
         {ticketingProvider && (
           <div className="flex items-center gap-1.5">
-            <span className="inline-block h-2 w-2 rounded-full bg-nexus-success" />
+            <ConnectionDot status="connected" />
             <span className="capitalize">{ticketingProvider}</span>
             {userName && (
               <span className="text-nexus-text-dim">({userName})</span>
@@ -64,10 +72,10 @@ export function StatusBar() {
           </div>
         )}
 
-        {/* MCP connections — only show active (non-disconnected) entries */}
+        {/* MCP connections */}
         <button
           onClick={() => setShowMCPPanel(true)}
-          className="flex items-center gap-3 rounded-md px-1 py-0.5 transition-colors hover:bg-nexus-surface-raised"
+          className="flex items-center gap-3 rounded-md px-1.5 py-0.5 transition-colors hover:bg-nexus-surface-raised"
           title="Manage tool connections"
         >
           {Object.entries(mcpConnections)
@@ -92,7 +100,7 @@ export function StatusBar() {
         {/* Active ticket chip */}
         {activeTicketId && (
           <div className="flex items-center gap-1.5 rounded-md bg-nexus-accent/10 px-2 py-0.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-nexus-accent" />
+            <span className="h-1.5 w-1.5 rounded-full bg-nexus-accent" style={{ boxShadow: '0 0 6px rgb(var(--nexus-accent) / 0.5)' }} />
             <span className="font-mono text-nexus-accent">#{activeTicketId}</span>
             {ticketIntelligence?.subject && (
               <span className="max-w-[200px] truncate text-nexus-text-muted">
@@ -106,37 +114,37 @@ export function StatusBar() {
         <SLAStatusIndicator />
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <HitlToggle />
           <AutonomousIndicator />
         </div>
-        <span className="text-nexus-text-dim">|</span>
+        <span className="text-nexus-border">│</span>
         <ThemeToggle />
-        <span className="text-nexus-text-dim">|</span>
+        <span className="text-nexus-border">│</span>
         {llmModel && (
           <>
             <span className="flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-nexus-accent" />
-              {llmModel}
+              <span className="h-1.5 w-1.5 rounded-full bg-nexus-accent" style={{ boxShadow: '0 0 6px rgb(var(--nexus-accent) / 0.5)' }} />
+              <span className="font-mono">{llmModel}</span>
             </span>
-            <span className="text-nexus-text-dim">|</span>
+            <span className="text-nexus-border">│</span>
           </>
         )}
-        <span>Session: {uptime}</span>
+        <span className="font-mono">⏱ {uptime}</span>
         <button
           onClick={() => setShowMorningBrief(true)}
-          className="rounded-md bg-nexus-accent/15 px-2 py-0.5 font-medium text-nexus-accent transition-colors hover:bg-nexus-accent/25"
+          className="rounded-md bg-nexus-accent/10 px-2 py-0.5 font-medium text-nexus-accent transition-all hover:bg-nexus-accent/20"
+          style={{ boxShadow: "0 0 8px rgb(var(--nexus-accent) / 0.1)" }}
           title="Open Morning Brief"
         >
           Brief
         </button>
-        <span className="text-nexus-text-dim">|</span>
+        <span className="text-nexus-border">│</span>
         <span className="text-nexus-text-dim">
-          <kbd className="rounded bg-nexus-surface-raised px-1 font-mono text-[10px]">
+          <kbd className="rounded border border-nexus-border bg-nexus-surface-raised px-1 font-mono text-[10px]">
             ⌘K
-          </kbd>{" "}
-          Command
+          </kbd>
         </span>
       </div>
     </div>
