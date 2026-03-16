@@ -1,9 +1,10 @@
+import { ThemeProvider } from "./components/providers/ThemeProvider";
 import { HudShell } from "./components/layout/HudShell";
 import { Toaster } from "sonner";
 
 export default function App() {
   return (
-    <>
+    <ThemeProvider>
       <HudShell />
       <Toaster
         position="bottom-right"
@@ -16,6 +17,6 @@ export default function App() {
           },
         }}
       />
-    </>
+    </ThemeProvider>
   );
 }
