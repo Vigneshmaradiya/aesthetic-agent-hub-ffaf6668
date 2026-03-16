@@ -2,8 +2,8 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "class",
   theme: {
@@ -30,6 +30,12 @@ const config: Config = {
       fontFamily: {
         mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
         sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
+      },
+      animation: {
+        "pulse-slow": "nexus-pulse 3s ease-in-out infinite",
+        "glow-pulse": "nexus-glow-pulse 2s ease-in-out infinite",
+        "fade-in": "nexus-fade-in 0.3s ease-out",
+        "slide-up": "nexus-slide-up 0.4s ease-out",
       },
     },
   },
