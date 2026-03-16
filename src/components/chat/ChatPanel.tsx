@@ -37,18 +37,23 @@ export function ChatPanel() {
   return (
     <div className="flex h-full flex-col bg-nexus-base">
       {/* Chat header with model selector */}
-      <div className="flex items-center justify-between border-b border-nexus-border px-4 py-2">
-        <span className="text-xs font-semibold uppercase tracking-wider text-nexus-text-dim">
-          Nexus Co-pilot
-        </span>
+      <div className="glass-header flex items-center justify-between border-b border-nexus-border px-4 py-2.5">
+        <div className="flex items-center gap-2">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-nexus-accent/10">
+            <span className="text-xs text-nexus-accent">🤖</span>
+          </div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-nexus-text-muted">
+            Nexus Co-pilot
+          </span>
+        </div>
         <div className="flex items-center gap-2">
           {messages.length > 0 && !isStreaming && (
             <button
               onClick={clearChat}
               title="Clear chat history"
-              className="rounded-md px-2 py-1 text-[10px] font-medium text-nexus-text-dim transition-colors hover:bg-nexus-surface-raised hover:text-red-400"
+              className="rounded-md border border-transparent px-2 py-1 text-[10px] font-medium text-nexus-text-dim transition-all hover:border-nexus-error/30 hover:bg-nexus-error/10 hover:text-nexus-error"
             >
-              Clear chat
+              Clear
             </button>
           )}
           <ModelSelector />
@@ -67,7 +72,7 @@ export function ChatPanel() {
 
       {/* HITL Approval Actions */}
       {pendingActions.length > 0 && (
-        <div className="space-y-2 border-t border-nexus-border px-4 py-3">
+        <div className="animate-slide-up space-y-2 border-t border-nexus-warning/20 bg-nexus-warning/5 px-4 py-3">
           {pendingActions.map((action) => (
             <ActionApproval key={action.id} action={action} />
           ))}
@@ -82,7 +87,7 @@ export function ChatPanel() {
       )}
 
       {/* Input area */}
-      <div className="border-t border-nexus-border px-4 py-3">
+      <div className="glass-surface border-t border-nexus-border px-4 py-3">
         <ChatInput
           onSend={sendMessage}
           disabled={isStreaming}

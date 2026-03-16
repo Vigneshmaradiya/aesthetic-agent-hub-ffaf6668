@@ -8,7 +8,6 @@ import { MarkdownContent } from "./MarkdownContent";
 
 interface MessageBubbleProps {
   message: ChatMessage;
-  /** Skip entrance animation and use plain text (used for the live streaming bubble). */
   isStreaming?: boolean;
 }
 
@@ -32,16 +31,28 @@ export function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
 
   return (
     <motion.div
-      className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+      className={`flex gap-3 ${isUser ? "flex-row-reverse" : "flex-row"}`}
       initial={isStreaming ? false : { opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
     >
+      {/* Avatar */}
       <div
-        className={`max-w-[80%] rounded-xl border px-4 py-3 ${
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm ${
           isUser
-            ? "bg-nexus-accent/15 border-nexus-accent/30 text-nexus-text"
-            : "bg-nexus-surface border-nexus-border text-nexus-text"
+            ? "bg-gradient-to-br from-nexus-accent-dim to-nexus-accent-muted text-white"
+            : "border border-nexus-border bg-nexus-surface-raised text-nexus-accent"
+        }`}
+      >
+        {isUser ? "👤" : "🤖"}
+      </div>
+
+      {/* Content */}
+      <div
+        className={`max-w-[80%] rounded-xl border px-4 py-3 transition-all ${
+          isUser
+            ? "border-nexus-accent/20 bg-nexus-accent/10 text-nexus-text"
+            : "glow-border border-nexus-border bg-nexus-surface text-nexus-text"
         }`}
       >
         {/* Thought trace for assistant messages */}
@@ -49,13 +60,12 @@ export function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
           <ThoughtTrace steps={message.thoughts} />
         )}
 
-        {/* Tool call trace — collapsible section above message content */}
+        {/* Tool call trace */}
         {!isUser && message.toolCalls && message.toolCalls.length > 0 && (
           <ToolCallTrace toolCalls={message.toolCalls} />
         )}
 
-        {/* Message content — always rendered as markdown for assistant messages.
-            User messages stay as plain text to preserve exact input. */}
+        {/* Message content */}
         {isUser ? (
           <p className="whitespace-pre-wrap text-sm leading-relaxed">
             {message.content}
@@ -66,7 +76,7 @@ export function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
 
         {/* Timestamp */}
         <p
-          className={`mt-1 text-[10px] ${
+          className={`mt-2 text-[10px] ${
             isUser ? "text-nexus-accent-dim" : "text-nexus-text-dim"
           }`}
         >
